@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VeneRate | Diferencial Dólar BCV, Euro BCV y USDT</title>
+    <meta name="description" content="Monitoreo en tiempo real y cálculo del diferencial cambiario entre el Dólar BCV, Euro BCV y USDT (Binance P2P) en Venezuela.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="stars-bg"></div>
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+
+    <div class="app-container">
+        <!-- Header Section -->
+        <header class="app-header">
+            <div class="logo-area">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-chart-line-up"></i>
+                </div>
+                <div>
+                    <h1>Vene<span class="gradient-text">Rate</span></h1>
+                    <p class="tagline">Diferencial Cambiario en Tiempo Real</p>
+                </div>
+            </div>
+            <div class="status-badge" id="status-badge">
+                <span class="indicator pulse"></span>
+                <span id="status-text">Conectando con APIs...</span>
+            </div>
+        </header>
+
+        <!-- Main Dashboard -->
+        <main class="dashboard-grid">
+            <!-- Rate Cards -->
+            <section class="cards-section">
+                <h2 class="section-title"><i class="fa-solid fa-coins"></i> Cotizaciones Actuales</h2>
+                <div class="cards-grid">
+                    <!-- Dolar BCV Card -->
+                    <div class="rate-card" id="card-dolar-bcv">
+                        <div class="card-header">
+                            <div class="coin-info">
+                                <span class="coin-icon icon-usd"><i class="fa-solid fa-building-columns"></i></span>
+                                <div>
+                                    <h3>Dólar BCV</h3>
+                                    <p>Tasa Oficial (USD/VES)</p>
+                                </div>
+                            </div>
+                            <span class="source-tag">Oficial</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="price-display">
+                                <span class="currency-symbol">Bs.</span>
+                                <span class="price-value" id="val-dolar-bcv">--,--</span>
+                            </div>
+                            <div class="card-footer-info">
+                                <span id="date-dolar-bcv"><i class="fa-regular fa-clock"></i> Cargando...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Euro BCV Card -->
+                    <div class="rate-card" id="card-euro-bcv">
+                        <div class="card-header">
+                            <div class="coin-info">
+                                <span class="coin-icon icon-eur"><i class="fa-solid fa-euro-sign"></i></span>
+                                <div>
+                                    <h3>Euro BCV</h3>
+                                    <p>Tasa Oficial (EUR/VES)</p>
+                                </div>
+                            </div>
+                            <span class="source-tag">Oficial</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="price-display">
+                                <span class="currency-symbol">Bs.</span>
+                                <span class="price-value" id="val-euro-bcv">--,--</span>
+                            </div>
+                            <div class="card-footer-info">
+                                <span id="date-euro-bcv"><i class="fa-regular fa-clock"></i> Cargando...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- USDT Binance Card -->
+                    <div class="rate-card highlighted-card" id="card-usdt">
+                        <div class="card-header">
+                            <div class="coin-info">
+                                <span class="coin-icon icon-usdt"><i class="fa-solid fa-dollar-sign"></i></span>
+                                <div>
+                                    <h3>USDT Binance</h3>
+                                    <p>Mercado P2P (USDT/VES)</p>
+                                </div>
+                            </div>
+                            <span class="source-tag crypto-tag">P2P Cripto</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="price-display">
+                                <span class="currency-symbol">Bs.</span>
+                                <span class="price-value" id="val-usdt">--,--</span>
+                            </div>
+                            <div class="p2p-details">
+                                <div class="p2p-sub"><span class="label">Compra (Bid):</span> <span id="val-usdt-bid">--,--</span></div>
+                                <div class="p2p-sub"><span class="label">Venta (Ask):</span> <span id="val-usdt-ask">--,--</span></div>
+                            </div>
+                            <div class="card-footer-info">
+                                <span id="date-usdt"><i class="fa-regular fa-clock"></i> Cargando...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Spread Analysis Section -->
+            <section class="spread-section">
+                <h2 class="section-title"><i class="fa-solid fa-calculator"></i> Análisis de Diferencial (Brecha)</h2>
+                <div class="spread-container">
+                    <div class="spread-header-stats">
+                        <div class="spread-box" id="spread-box-dolar">
+                            <div class="spread-title">Brecha Dólar BCV vs USDT</div>
+                            <div class="spread-main-value" id="spread-dolar-pct">--%</div>
+                            <div class="spread-sub-value" id="spread-dolar-abs">-- VES de diferencia</div>
+                        </div>
+                        <div class="spread-box" id="spread-box-euro">
+                            <div class="spread-title">Brecha Euro BCV vs USDT</div>
+                            <div class="spread-main-value" id="spread-euro-pct">--%</div>
+                            <div class="spread-sub-value" id="spread-euro-abs">-- VES de diferencia</div>
+                        </div>
+                    </div>
+
+                    <!-- Visual Comparison Bar -->
+                    <div class="visual-spread-card">
+                        <h3>Comparación Relativa (VES)</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="ratesChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Calculator Section -->
+            <section class="calculator-section">
+                <h2 class="section-title"><i class="fa-solid fa-rotate"></i> Calculadora Multidivisa Inteligente</h2>
+                <div class="calc-card">
+                    <div class="calc-input-group">
+                        <label for="calc-amount">Monto a Convertir</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="calc-amount" placeholder="Ej. 100" min="0" step="any" value="100">
+                            <select id="calc-currency">
+                                <option value="USD">USD (Dólar)</option>
+                                <option value="EUR">EUR (Euro)</option>
+                                <option value="USDT">USDT (Cripto)</option>
+                                <option value="VES">VES (Bolívares)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="calc-results">
+                        <h3>Resultados en Bolívares (VES)</h3>
+                        <div class="results-grid">
+                            <div class="result-row" id="result-bcv">
+                                <span class="rate-name"><i class="fa-solid fa-building-columns"></i> Dólar BCV</span>
+                                <span class="result-value" id="calc-res-bcv">Bs. 0,00</span>
+                            </div>
+                            <div class="result-row" id="result-euro">
+                                <span class="rate-name"><i class="fa-solid fa-euro-sign"></i> Euro BCV</span>
+                                <span class="result-value" id="calc-res-euro">Bs. 0,00</span>
+                            </div>
+                            <div class="result-row highlighted-result" id="result-usdt">
+                                <span class="rate-name"><i class="fa-solid fa-dollar-sign"></i> USDT P2P</span>
+                                <span class="result-value" id="calc-res-usdt">Bs. 0,00</span>
+                            </div>
+                        </div>
+                        <div class="calc-savings-note" id="calc-savings">
+                            <!-- Dynamic insight goes here -->
+                            Cargando cálculos...
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="footer-left">
+                <button class="refresh-btn" id="refresh-btn">
+                    <i class="fa-solid fa-arrows-rotate"></i> Actualizar Ahora (<span id="countdown">60</span>s)
+                </button>
+            </div>
+            <div class="footer-right">
+                <p>Fuentes: <strong>DolarApi.com</strong> (BCV) y <strong>CriptoYa.com</strong> (USDT)</p>
+                <p class="dev-credits">Desarrollado con <i class="fa-solid fa-heart"></i> para la comunidad</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Custom JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>
