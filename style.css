@@ -642,6 +642,129 @@ body {
     color: #ef4444;
 }
 
+/* Mobile Responsive Adjustments */
+@media (max-width: 768px) {
+    .app-container {
+        padding: 1.25rem 1rem;
+        gap: 1.75rem;
+    }
+    
+    .logo-area h1 {
+        font-size: 1.75rem;
+    }
+    
+    .rate-card {
+        padding: 1.5rem;
+        gap: 1.25rem;
+    }
+    
+    .price-value {
+        font-size: 2.2rem;
+    }
+    
+    .spread-main-value {
+        font-size: 2.0rem;
+    }
+    
+    .calc-card {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .app-container {
+        padding: 1rem 0.75rem;
+        gap: 1.5rem;
+    }
+    
+    .logo-area h1 {
+        font-size: 1.5rem;
+    }
+    
+    .logo-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        font-size: 1.2rem;
+    }
+    
+    .status-badge {
+        width: 100%;
+        justify-content: center;
+        padding: 0.4rem 0.75rem;
+    }
+    
+    .rate-card {
+        padding: 1.25rem;
+        gap: 1.0rem;
+    }
+    
+    .price-display {
+        flex-wrap: wrap;
+    }
+    
+    .price-value {
+        font-size: 1.85rem;
+    }
+    
+    .spread-box {
+        padding: 1.25rem;
+    }
+    
+    .spread-main-value {
+        font-size: 1.75rem;
+    }
+    
+    .input-wrapper {
+        flex-direction: column;
+        background: transparent;
+        border: none;
+        padding: 0;
+        gap: 0.75rem;
+    }
+    
+    .input-wrapper input {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        width: 100%;
+        padding: 0.75rem 1rem;
+        font-size: 1.15rem;
+    }
+    
+    .input-wrapper select {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        width: 100%;
+        height: 46px;
+        padding: 0 1rem;
+        font-size: 0.95rem;
+    }
+    
+    .result-row {
+        padding: 0.85rem 1rem;
+    }
+    
+    .result-row .rate-name {
+        font-size: 0.85rem;
+    }
+    
+    .result-row .result-value {
+        font-size: 0.95rem;
+    }
+    
+    .calc-savings-note {
+        font-size: 0.80rem;
+        padding: 0.85rem;
+    }
+    
+    .refresh-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
 /* Animations */
 @keyframes pulseGlow {
     0% {
