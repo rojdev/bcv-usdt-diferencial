@@ -255,59 +255,53 @@ function runCalculator() {
         calcResEuro.textContent = `€ ${formatVES(euroResult)}`;
         calcResUSDT.textContent = `${formatVES(usdtResult)} USDT`;
         
-        // Insight
         const diffDolarPct = ((usdtRate - dolarBCV) / dolarBCV) * 100;
         detailsText = `Con Bs. ${formatVES(amount)} obtienes <strong>${formatVES(bcvResult)} USD</strong> a tasa oficial BCV, pero en el mercado cripto obtendrías <strong>${formatVES(usdtResult)} USDT</strong>. El dólar oficial te rinde un <strong>${diffDolarPct.toFixed(2)}% más</strong> en cantidad de divisas por tus Bolívares.`;
-    } else {
-        // Converting foreign currencies to VES
-        if (currency === 'USD') {
-            bcvResult = amount * dolarBCV;
-            euroResult = amount * (dolarBCV / euroBCV) * euroBCV; // cross rate
-            usdtResult = amount * usdtRate;
-            
-            const diffVES = usdtResult - bcvResult;
-            const diffPct = (diffVES / bcvResult) * 100;
-            detailsText = `Al cambiar $${formatVES(amount)} USD, obtienes <strong>Bs. ${formatVES(usdtResult)}</strong> en USDT (P2P) y <strong>Bs. ${formatVES(bcvResult)}</strong> a tasa Dólar BCV. ¡Obtienes <strong>Bs. ${formatVES(diffVES)} más</strong> (+${diffPct.toFixed(2)}%) usando USDT!`;
-        } else if (currency === 'EUR') {
-            bcvResult = amount * (euroBCV / dolarBCV) * dolarBCV; // cross rate
-            euroResult = amount * euroBCV;
-            usdtResult = (amount * euroBCV) / usdtRate * usdtRate; // raw value
-            
-            // For Euro, we can convert to VES directly
-            bcvResult = (amount * euroBCV / dolarBCV) * dolarBCV; // Actually, the VES value of EUR is just amount * euroBCV
-            bcvResult = amount * euroBCV; // wait, Euro BCV is already EUR/VES
-            usdtResult = (amount * euroBCV) / usdtRate * usdtRate; 
-            
-            // Let's show VES outcomes
-            const vesFromEurBCV = amount * euroBCV;
-            const usdEquivalent = (amount * euroBCV) / dolarBCV;
-            const vesFromUSDT = usdEquivalent * usdtRate;
-            
-            bcvResult = vesFromEurBCV; // EUR to VES via BCV
-            euroResult = vesFromEurBCV; // EUR to VES
-            usdtResult = vesFromUSDT; // EUR to USD then USD to VES via USDT
-            
-            const diffVES = usdtResult - bcvResult;
-            const diffPct = (diffVES / bcvResult) * 100;
-            
-            if (diffVES > 0) {
-                detailsText = `Cambiando €${formatVES(amount)} EUR obtenida a tasa oficial da Bs. ${formatVES(bcvResult)}. Si conviertes a USD y vendes en USDT P2P obtienes <strong>Bs. ${formatVES(usdtResult)}</strong> (Diferencia de <strong>Bs. ${formatVES(diffVES)}</strong> a favor, +${diffPct.toFixed(2)}%).`;
-            } else {
-                detailsText = `Cambiando €${formatVES(amount)} EUR a tasa oficial obtienes <strong>Bs. ${formatVES(bcvResult)}</strong>. Con USDT P2P obtendrías Bs. ${formatVES(usdtResult)}. El Euro Oficial te da <strong>Bs. ${formatVES(Math.abs(diffVES))} más</strong> que el mercado USDT P2P.`;
-            }
-        } else if (currency === 'USDT') {
-            bcvResult = amount * dolarBCV;
-            euroResult = (amount * usdtRate) / euroBCV * euroBCV; // just showing VES equivalent
-            usdtResult = amount * usdtRate;
-            
-            const diffVES = usdtResult - bcvResult;
-            const diffPct = (diffVES / bcvResult) * 100;
-            detailsText = `Por ${formatVES(amount)} USDT obtienes <strong>Bs. ${formatVES(usdtResult)}</strong> en P2P, comparado con <strong>Bs. ${formatVES(bcvResult)}</strong> si se calculara a tasa oficial Dólar BCV. La brecha es de <strong>Bs. ${formatVES(diffVES)}</strong> (+${diffPct.toFixed(2)}%).`;
-        }
+    } else if (currency === 'USD') {
+        // USD to VES
+        bcvResult = amount * dolarBCV;
+        // USD to EUR equivalent (official cross rate)
+        euroResult = amount * (dolarBCV / euroBCV);
+        // USD (USDT) to VES
+        usdtResult = amount * usdtRate;
         
         calcResBCV.textContent = `Bs. ${formatVES(bcvResult)}`;
+        calcResEuro.textContent = `€ ${formatVES(euroResult)}`;
+        calcResUSDT.textContent = `Bs. ${formatVES(usdtResult)}`;
+        
+        const diffVES = usdtResult - bcvResult;
+        const diffPct = (diffVES / bcvResult) * 100;
+        detailsText = `Al cambiar $${formatVES(amount)} USD, obtienes <strong>Bs. ${formatVES(usdtResult)}</strong> en USDT (P2P) y <strong>Bs. ${formatVES(bcvResult)}</strong> a tasa Dólar BCV. ¡Obtienes <strong>Bs. ${formatVES(diffVES)} más</strong> (+${diffPct.toFixed(2)}%) usando USDT! Tu monto equivale a <strong>€ ${formatVES(euroResult)} EUR</strong> oficiales.`;
+    } else if (currency === 'EUR') {
+        // EUR to USD equivalent (official cross rate)
+        bcvResult = amount * (euroBCV / dolarBCV);
+        // EUR to VES
+        euroResult = amount * euroBCV;
+        // EUR to VES via USDT (converting EUR to USD first, then selling USD as USDT)
+        usdtResult = (amount * (euroBCV / dolarBCV)) * usdtRate;
+        
+        calcResBCV.textContent = `$ ${formatVES(bcvResult)}`;
         calcResEuro.textContent = `Bs. ${formatVES(euroResult)}`;
         calcResUSDT.textContent = `Bs. ${formatVES(usdtResult)}`;
+        
+        const diffVES = usdtResult - euroResult;
+        const diffPct = (diffVES / euroResult) * 100;
+        detailsText = `Cambiando €${formatVES(amount)} EUR a tasa oficial obtienes <strong>Bs. ${formatVES(euroResult)}</strong>. Si conviertes a USD ($${formatVES(bcvResult)} USD) y vendes en USDT P2P, obtienes <strong>Bs. ${formatVES(usdtResult)}</strong> (Diferencia de <strong>Bs. ${formatVES(diffVES)}</strong> a favor, +${diffPct.toFixed(2)}%).`;
+    } else if (currency === 'USDT') {
+        // USDT to VES (equivalent to official Dolar BCV)
+        bcvResult = amount * dolarBCV;
+        // USDT to EUR equivalent (official cross rate)
+        euroResult = amount * (dolarBCV / euroBCV);
+        // USDT to VES
+        usdtResult = amount * usdtRate;
+        
+        calcResBCV.textContent = `Bs. ${formatVES(bcvResult)}`;
+        calcResEuro.textContent = `€ ${formatVES(euroResult)}`;
+        calcResUSDT.textContent = `Bs. ${formatVES(usdtResult)}`;
+        
+        const diffVES = usdtResult - bcvResult;
+        const diffPct = (diffVES / bcvResult) * 100;
+        detailsText = `Por ${formatVES(amount)} USDT obtienes <strong>Bs. ${formatVES(usdtResult)}</strong> en P2P, comparado con <strong>Bs. ${formatVES(bcvResult)}</strong> si se calculara a tasa oficial Dólar BCV. La brecha es de <strong>Bs. ${formatVES(diffVES)}</strong> (+${diffPct.toFixed(2)}%).`;
     }
 
     calcSavings.innerHTML = detailsText;
@@ -340,8 +334,6 @@ refreshBtn.addEventListener('click', () => {
 
 calcAmount.addEventListener('input', runCalculator);
 calcCurrency.addEventListener('change', () => {
-    // Update labels in result list based on input currency
-    const labels = document.querySelectorAll('.results-grid .rate-name');
     const currency = calcCurrency.value;
     
     if (currency === 'VES') {
@@ -349,11 +341,16 @@ calcCurrency.addEventListener('change', () => {
         document.getElementById('result-bcv').querySelector('.rate-name').innerHTML = '<i class="fa-solid fa-building-columns"></i> Dólar BCV (USD)';
         document.getElementById('result-euro').querySelector('.rate-name').innerHTML = '<i class="fa-solid fa-euro-sign"></i> Euro BCV (EUR)';
         document.getElementById('result-usdt').querySelector('.rate-name').innerHTML = '<i class="fa-solid fa-dollar-sign"></i> USDT P2P (USDT)';
-    } else {
-        document.querySelector('.calc-results h3').textContent = 'Resultados en Bolívares (VES)';
-        document.getElementById('result-bcv').querySelector('.rate-name').innerHTML = '<i class="fa-solid fa-building-columns"></i> Dólar BCV';
-        document.getElementById('result-euro').querySelector('.rate-name').innerHTML = '<i class="fa-solid fa-euro-sign"></i> Euro BCV';
-        document.getElementById('result-usdt').querySelector('.rate-name').innerHTML = '<i class="fa-solid fa-dollar-sign"></i> USDT P2P';
+    } else if (currency === 'USD' || currency === 'USDT') {
+        document.querySelector('.calc-results h3').textContent = 'Resultados de Conversión';
+        document.getElementById('result-bcv').querySelector('.rate-name').innerHTML = '<i class="fa-solid fa-building-columns"></i> Dólar BCV (VES)';
+        document.getElementById('result-euro').querySelector('.rate-name').innerHTML = '<i class="fa-solid fa-euro-sign"></i> Euro BCV (EUR)';
+        document.getElementById('result-usdt').querySelector('.rate-name').innerHTML = '<i class="fa-solid fa-dollar-sign"></i> USDT P2P (VES)';
+    } else if (currency === 'EUR') {
+        document.querySelector('.calc-results h3').textContent = 'Resultados de Conversión';
+        document.getElementById('result-bcv').querySelector('.rate-name').innerHTML = '<i class="fa-solid fa-building-columns"></i> Dólar BCV (USD)';
+        document.getElementById('result-euro').querySelector('.rate-name').innerHTML = '<i class="fa-solid fa-euro-sign"></i> Euro BCV (VES)';
+        document.getElementById('result-usdt').querySelector('.rate-name').innerHTML = '<i class="fa-solid fa-dollar-sign"></i> USDT P2P (VES)';
     }
     runCalculator();
 });
