@@ -229,9 +229,30 @@ function updateChart() {
     ratesChart = new Chart(ctx, config);
 }
 
+// Helper to parse numbers in different formats (e.g. 141.938,70 or 141,938.70 or with currency symbols)
+function parseFormattedNumber(inputStr) {
+    if (!inputStr) return NaN;
+    
+    // Remove whitespace and non-numeric/non-separator characters
+    let clean = inputStr.trim().replace(/[^0-9.,-]/g, '');
+    
+    const lastComma = clean.lastIndexOf(',');
+    const lastDot = clean.lastIndexOf('.');
+    
+    if (lastComma > lastDot) {
+        // Comma is the decimal separator (Spanish format: 141.938,70)
+        clean = clean.replace(/\./g, '').replace(/,/g, '.');
+    } else if (lastDot > lastComma) {
+        // Dot is the decimal separator (English format: 141,938.70)
+        clean = clean.replace(/,/g, '');
+    }
+    
+    return parseFloat(clean);
+}
+
 // Converter Calculator Logic
 function runCalculator() {
-    const amount = parseFloat(calcAmount.value);
+    const amount = parseFormattedNumber(calcAmount.value);
     const currency = calcCurrency.value;
     
     if (isNaN(amount) || amount <= 0) {
