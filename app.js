@@ -288,7 +288,7 @@ function runCalculator() {
         
         calcResBCV.textContent = `Bs. ${formatVES(bcvResult)}`;
         calcResEuro.textContent = `€ ${formatVES(euroResult)}`;
-        calcResUSDT.textContent = `Bs. ${formatVES(usdtResult)}`;
+        calcResUSDT.textContent = `Bs. ${formatVES(usdtResult)} (${formatVES(amount)} USDT)`;
         
         const diffVES = usdtResult - bcvResult;
         const diffPct = (diffVES / bcvResult) * 100;
@@ -299,11 +299,12 @@ function runCalculator() {
         // EUR to VES
         euroResult = amount * euroBCV;
         // EUR to VES via USDT (converting EUR to USD first, then selling USD as USDT)
-        usdtResult = (amount * (euroBCV / dolarBCV)) * usdtRate;
+        const usdtAmount = amount * (euroBCV / dolarBCV);
+        usdtResult = usdtAmount * usdtRate;
         
         calcResBCV.textContent = `$ ${formatVES(bcvResult)}`;
         calcResEuro.textContent = `Bs. ${formatVES(euroResult)}`;
-        calcResUSDT.textContent = `Bs. ${formatVES(usdtResult)}`;
+        calcResUSDT.textContent = `Bs. ${formatVES(usdtResult)} (${formatVES(usdtAmount)} USDT)`;
         
         const diffVES = usdtResult - euroResult;
         const diffPct = (diffVES / euroResult) * 100;
