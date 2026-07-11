@@ -277,12 +277,12 @@ function runCalculator() {
         // Dolar BCV
         bcvResult = amount / dolarBCV;
         calcResBCV.textContent = `$ ${formatVES(bcvResult)}`;
-        calcResBCVSub.textContent = `${formatVES(amount / usdtRate)} USDT (Real)`;
+        calcResBCVSub.textContent = `${formatVES(amount / usdtRate)} USDT`;
         
         // Euro BCV
         euroResult = amount / euroBCV;
         calcResEuro.textContent = `€ ${formatVES(euroResult)}`;
-        calcResEuroSub.textContent = `${formatVES(amount / usdtRate)} USDT (Real)`;
+        calcResEuroSub.textContent = `${formatVES(amount / usdtRate)} USDT`;
         
         // USDT P2P
         usdtResult = amount / usdtRate;
@@ -316,7 +316,7 @@ function runCalculator() {
         // USDT P2P Row
         usdtResult = baseVES / usdtRate;
         calcResUSDT.textContent = `Bs. ${formatVES(baseVES)}`;
-        calcResUSDTSub.textContent = `${formatVES(usdtResult)} USDT (Real)`;
+        calcResUSDTSub.textContent = `${formatVES(usdtResult)} USDT`;
         
         // Dynamic Insight Text
         if (currency === 'USD') {
