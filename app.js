@@ -28,7 +28,9 @@ const spreadEuroAbs = document.getElementById('spread-euro-abs');
 const calcAmount = document.getElementById('calc-amount');
 const calcCurrency = document.getElementById('calc-currency');
 const calcResBCV = document.getElementById('calc-res-bcv');
+const calcResBCVSub = document.getElementById('calc-res-bcv-sub');
 const calcResEuro = document.getElementById('calc-res-euro');
+const calcResEuroSub = document.getElementById('calc-res-euro-sub');
 const calcResUSDT = document.getElementById('calc-res-usdt');
 const calcResUSDTSub = document.getElementById('calc-res-usdt-sub');
 const calcSavings = document.getElementById('calc-savings');
@@ -255,10 +257,11 @@ function parseFormattedNumber(inputStr) {
 function runCalculator() {
     const amount = parseFormattedNumber(calcAmount.value);
     const currency = calcCurrency.value;
-    
-    if (isNaN(amount) || amount <= 0) {
+      if (isNaN(amount) || amount <= 0) {
         calcResBCV.textContent = 'Bs. 0,00';
+        calcResBCVSub.textContent = '';
         calcResEuro.textContent = 'Bs. 0,00';
+        calcResEuroSub.textContent = '';
         calcResUSDT.textContent = 'Bs. 0,00';
         calcResUSDTSub.textContent = '';
         calcSavings.innerHTML = 'Ingrese un monto válido para calcular.';
@@ -275,7 +278,9 @@ function runCalculator() {
         usdtResult = amount / usdtRate;
         
         calcResBCV.textContent = `$ ${formatVES(bcvResult)}`;
+        calcResBCVSub.textContent = `${formatVES(amount / usdtRate)} USDT`;
         calcResEuro.textContent = `€ ${formatVES(euroResult)}`;
+        calcResEuroSub.textContent = `${formatVES(amount / usdtRate)} USDT`;
         calcResUSDT.textContent = `${formatVES(usdtResult)} USDT`;
         calcResUSDTSub.textContent = '';
         
@@ -290,7 +295,9 @@ function runCalculator() {
         usdtResult = amount * usdtRate;
         
         calcResBCV.textContent = `Bs. ${formatVES(bcvResult)}`;
+        calcResBCVSub.textContent = `${formatVES(bcvResult / usdtRate)} USDT`;
         calcResEuro.textContent = `€ ${formatVES(euroResult)}`;
+        calcResEuroSub.textContent = `${formatVES(bcvResult / usdtRate)} USDT`;
         calcResUSDT.textContent = `Bs. ${formatVES(usdtResult)}`;
         calcResUSDTSub.textContent = `${formatVES(amount)} USDT`;
         
@@ -307,7 +314,9 @@ function runCalculator() {
         usdtResult = usdtAmount * usdtRate;
         
         calcResBCV.textContent = `$ ${formatVES(bcvResult)}`;
+        calcResBCVSub.textContent = `${formatVES(euroResult / usdtRate)} USDT`;
         calcResEuro.textContent = `Bs. ${formatVES(euroResult)}`;
+        calcResEuroSub.textContent = `${formatVES(euroResult / usdtRate)} USDT`;
         calcResUSDT.textContent = `Bs. ${formatVES(usdtResult)}`;
         calcResUSDTSub.textContent = `${formatVES(usdtAmount)} USDT`;
         
@@ -323,9 +332,11 @@ function runCalculator() {
         usdtResult = amount * usdtRate;
         
         calcResBCV.textContent = `Bs. ${formatVES(bcvResult)}`;
+        calcResBCVSub.textContent = `${formatVES(bcvResult / usdtRate)} USDT`;
         calcResEuro.textContent = `€ ${formatVES(euroResult)}`;
+        calcResEuroSub.textContent = `${formatVES(bcvResult / usdtRate)} USDT`;
         calcResUSDT.textContent = `Bs. ${formatVES(usdtResult)}`;
-        calcResUSDTSub.textContent = '';
+        calcResUSDTSub.textContent = `${formatVES(amount)} USDT`;
         
         const diffVES = usdtResult - bcvResult;
         const diffPct = (diffVES / bcvResult) * 100;
