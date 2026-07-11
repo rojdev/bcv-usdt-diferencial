@@ -548,6 +548,21 @@ body {
     font-weight: 700;
 }
 
+.result-value-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+}
+
+.result-value-sub {
+    font-size: 0.85rem;
+    color: var(--accent-emerald);
+    font-weight: 500;
+    margin-top: 0.15rem;
+    opacity: 0.85;
+}
+
 .highlighted-result {
     background: rgba(16, 185, 129, 0.05);
     border-color: rgba(16, 185, 129, 0.15);

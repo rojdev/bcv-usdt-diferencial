@@ -30,6 +30,7 @@ const calcCurrency = document.getElementById('calc-currency');
 const calcResBCV = document.getElementById('calc-res-bcv');
 const calcResEuro = document.getElementById('calc-res-euro');
 const calcResUSDT = document.getElementById('calc-res-usdt');
+const calcResUSDTSub = document.getElementById('calc-res-usdt-sub');
 const calcSavings = document.getElementById('calc-savings');
 
 const refreshBtn = document.getElementById('refresh-btn');
@@ -259,6 +260,7 @@ function runCalculator() {
         calcResBCV.textContent = 'Bs. 0,00';
         calcResEuro.textContent = 'Bs. 0,00';
         calcResUSDT.textContent = 'Bs. 0,00';
+        calcResUSDTSub.textContent = '';
         calcSavings.innerHTML = 'Ingrese un monto válido para calcular.';
         return;
     }
@@ -275,6 +277,7 @@ function runCalculator() {
         calcResBCV.textContent = `$ ${formatVES(bcvResult)}`;
         calcResEuro.textContent = `€ ${formatVES(euroResult)}`;
         calcResUSDT.textContent = `${formatVES(usdtResult)} USDT`;
+        calcResUSDTSub.textContent = '';
         
         const diffDolarPct = ((usdtRate - dolarBCV) / dolarBCV) * 100;
         detailsText = `Con Bs. ${formatVES(amount)} obtienes <strong>${formatVES(bcvResult)} USD</strong> a tasa oficial BCV, pero en el mercado cripto obtendrías <strong>${formatVES(usdtResult)} USDT</strong>. El dólar oficial te rinde un <strong>${diffDolarPct.toFixed(2)}% más</strong> en cantidad de divisas por tus Bolívares.`;
@@ -288,7 +291,8 @@ function runCalculator() {
         
         calcResBCV.textContent = `Bs. ${formatVES(bcvResult)}`;
         calcResEuro.textContent = `€ ${formatVES(euroResult)}`;
-        calcResUSDT.textContent = `Bs. ${formatVES(usdtResult)} (${formatVES(amount)} USDT)`;
+        calcResUSDT.textContent = `Bs. ${formatVES(usdtResult)}`;
+        calcResUSDTSub.textContent = `${formatVES(amount)} USDT`;
         
         const diffVES = usdtResult - bcvResult;
         const diffPct = (diffVES / bcvResult) * 100;
@@ -304,7 +308,8 @@ function runCalculator() {
         
         calcResBCV.textContent = `$ ${formatVES(bcvResult)}`;
         calcResEuro.textContent = `Bs. ${formatVES(euroResult)}`;
-        calcResUSDT.textContent = `Bs. ${formatVES(usdtResult)} (${formatVES(usdtAmount)} USDT)`;
+        calcResUSDT.textContent = `Bs. ${formatVES(usdtResult)}`;
+        calcResUSDTSub.textContent = `${formatVES(usdtAmount)} USDT`;
         
         const diffVES = usdtResult - euroResult;
         const diffPct = (diffVES / euroResult) * 100;
@@ -320,6 +325,7 @@ function runCalculator() {
         calcResBCV.textContent = `Bs. ${formatVES(bcvResult)}`;
         calcResEuro.textContent = `€ ${formatVES(euroResult)}`;
         calcResUSDT.textContent = `Bs. ${formatVES(usdtResult)}`;
+        calcResUSDTSub.textContent = '';
         
         const diffVES = usdtResult - bcvResult;
         const diffPct = (diffVES / bcvResult) * 100;
